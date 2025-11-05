@@ -22,50 +22,51 @@
     * 메모리
     * 캐시
     * 코드 vs 데이터
-4. Cargo 기초 사용법
+3. Cargo 기초 사용법
     * 새 프로젝트 생성
     * Cargo.toml
-5. 러스트 기초 문법
+4. 러스트 문법 1
     * 주석
+    * Hello World! 제작
     * println! 매크로
     * 변수 선언
     * 기본 자료형
-    * shadowing
     * 가변성
-    * 함수
     * 레퍼런스
-    * 슬라이스 타입
+    * 함수 호출
     * 제어 흐름문1
         - if
         - 반복문
-    * struct
-    * enum
-        - Option vs Null
-        - Result vs Exception
+5. up/down 게임 제작
+    * stdin
+    * use 기초
+    * random
+6. 소유권 심화
+    * 값 복사
+    * 값 전이
+    * 레퍼런스의 역할
+    * 가변성
+    * 모의 웹 서버 제작
+7. 러스트 문법 2
+    * shadowing
+    * 함수 정의
+    * 슬라이스 타입
+    * 타입 정의
+        * struct
+        * enum
+            - Option vs Null
+            - Result vs Exception
     * 제어 흐름문2
         - match
         - if let
-        - Let Some(a) = .. else 
-7. up/down 게임
-    - use 기초
-8. 러스트 심화 문법
+        - Let Some(a) = .. else
+    * 동전 분배기 제작
+8. 러스트 문법 3
     * impl T
-        - Orphan rule
     * Trait
-        - 게임, DB 등을 이용한 예시
-        - Dependency Injection?
     * 제너릭
         - Trait 바운드
-        - dyn
         - Box
+    * dyn
     * 라이프타임
 9. 프로젝트 실습 - Extra
-    - 아이디어: 미정, 투표로 받을 것
-    - Cargo 심화 사용법
-        - 종속성 추가
-        - crate란?
-        - 컴파일 엔트리포인틑
-    - 모듈
-        - 모듈 가시성 (public member in private module)
-        - use와 모듈
-        - mod.rs vs "name".rs
