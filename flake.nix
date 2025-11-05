@@ -21,6 +21,8 @@
           packages = [
             typst
             cargo
+            nodejs
+            pnpm
           ];
         };
       }

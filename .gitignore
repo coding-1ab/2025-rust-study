@@ -1,2 +1,4 @@
 target
 .direnv
+node_modules
+.env

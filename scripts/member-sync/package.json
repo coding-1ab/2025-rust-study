@@ -1,0 +1,22 @@
+{
+	"name": "@coding-1ab/member-sync",
+	"version": "0.0.0",
+	"type": "module",
+	"main": "src/index.ts",
+	"scripts": {
+		"start": "tsx --env-file .env ./src/index.ts"
+	},
+	"author": "Abiria <oro3673@gmail.com>",
+	"license": "MIT",
+	"private": true,
+	"packageManager": "pnpm@10.20.0",
+	"dependencies": {
+		"discord.js": "^14.24.2",
+		"es-toolkit": "^1.41.0",
+		"smol-toml": "^1.4.2"
+	},
+	"devDependencies": {
+		"tsx": "^4.20.6",
+		"typescript": "^5.9.3"
+	}
+}
