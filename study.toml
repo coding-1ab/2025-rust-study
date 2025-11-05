@@ -3,11 +3,121 @@ start_date = "unspecified yet"
 end_date = 2026-01-11
 
 [channels]
-main = 1434997353810759792
-stage = 1434997706673229956
+main = "1434997353810759792"
+stage = "1434997706673229956"
 
 [lecturer]
 nickname = "한현빈"
-id = "tmvkrpxl0"
+id = "348349452559319040"
 
 [[members]]
+nickname = "noobnuby"
+id = "878092667156856882"
+
+[[members]]
+nickname = "도한"
+id = "1261379196366880788"
+
+[[members]]
+nickname = "냉묜"
+id = "602523632358653953"
+
+[[members]]
+nickname = "Inter"
+id = "261556699431698433"
+
+[[members]]
+nickname = "Duelit"
+id = "1006043413008887838"
+
+[[members]]
+nickname = "tyange"
+id = "777100063234588672"
+
+[[members]]
+nickname = "nyani ' >')"
+id = "1352566338136309822"
+
+[[members]]
+nickname = "neco"
+id = "431794719232753664"
+
+[[members]]
+nickname = "Holiday"
+id = "824524491140628523"
+
+[[members]]
+nickname = "박구두"
+id = "370100048811524099"
+
+[[members]]
+nickname = "ユミ(유미)"
+id = "829684746904403978"
+
+[[members]]
+nickname = "easteregg423"
+id = "495046472413216770"
+
+[[members]]
+nickname = "6kitty"
+id = "873247209578176572"
+
+[[members]]
+nickname = "#[derive(Asta)]"
+id = "577266050769485844"
+
+[[members]]
+nickname = "집가고싶다"
+id = "937273161324564540"
+
+[[members]]
+nickname = "EthanH_"
+id = "988438501974503484"
+
+[[members]]
+nickname = "ny64"
+id = "690148325604720660"
+
+[[members]]
+nickname = "(핑X) 노을🜲"
+id = "387858780412706817"
+
+[[members]]
+nickname = "Seol"
+id = "763422064794796042"
+
+[[members]]
+nickname = "고라니"
+id = "844571376501522432"
+
+[[members]]
+nickname = "오린"
+id = "718700033993736192"
+
+[[members]]
+nickname = "SIMD"
+id = "1321366965364723763"
+
+[[members]]
+nickname = "늙고병듬"
+id = "450594431901368320"
+
+[[members]]
+nickname = "doc_raid"
+id = "391627940548575232"
+
+[[members]]
+nickname = "imgcode"
+id = "1397468588658659398"
+
+[[members]]
+nickname = "OkJa"
+id = "1102060210899665007"
+
+[[members]]
+nickname = "임규진"
+id = "816504505259786270"
+
+[[members]]
+nickname = "Dux0"
+id = "1336184122330320987"
