@@ -6,6 +6,7 @@
         2. Visual Studio Code
         3. Vim
 1. 러스트 소개
+    * Hello World! 제작
     * 언어 개요
     * 러스트의 강점
         - 저수준 코드 + 고수준 언어
@@ -15,19 +16,18 @@
         - 매크로
         - 스코프
         - 람다
-2. Computer Science 기초
+3. Computer Science 기초
     * 폰 노이만 구조
     * 복잡도와 자원
     * IO
     * 메모리
     * 캐시
     * 코드 vs 데이터
-3. Cargo 기초 사용법
+4. Cargo 기초 사용법
     * 새 프로젝트 생성
     * Cargo.toml
-4. 러스트 문법 1
+5. 러스트 문법 1
     * 주석
-    * Hello World! 제작
     * println! 매크로
     * 변수 선언
     * 기본 자료형
@@ -37,17 +37,17 @@
     * 제어 흐름문1
         - if
         - 반복문
-5. up/down 게임 제작
+6. up/down 게임 제작
     * stdin
     * use 기초
-6. 소유권 심화
+7. 소유권 심화
     * 값 복사
     * 값 전이
     * 레퍼런스의 역할
     * 라이프타임
     * 가변성
     * 모의 웹 서버 제작
-7. 러스트 문법 2
+8. 러스트 문법 2
     * shadowing
     * 함수 정의
     * 슬라이스 타입
@@ -61,11 +61,11 @@
         - if let
         - Let Some(a) = .. else
     * 동전 분배기 제작
-8. 러스트 문법 3
+9. 러스트 문법 3
     * impl T
     * Trait
     * 제너릭
         - Trait 바운드
         - Box
     * dyn
-9. 프로젝트 실습 - Extra
+10. 프로젝트 실습 - Extra
