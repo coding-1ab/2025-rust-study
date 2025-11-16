@@ -1,5 +1,5 @@
 name = "Rust 연말 온라인 스터디 그룹"
-start_date = "unspecified yet"
+start_date = 2025-11-08
 end_date = 2026-01-11
 
 [channels]
