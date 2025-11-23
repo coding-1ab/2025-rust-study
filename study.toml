@@ -159,3 +159,8 @@ preferred_study_weekday = "sunday"
 nickname = "Dux0"
 id = "1336184122330320987"
 preferred_study_weekday = "sunday"
+
+[[members]]
+nickname = "koi3125"
+id = "753625063357546556"
+preferred_study_weekday = "saturday"
