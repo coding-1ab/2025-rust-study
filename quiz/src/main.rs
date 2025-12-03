@@ -1,12 +1,15 @@
+use axum::Router;
 use axum::body::Body;
 use axum::extract::Path;
 use axum::http::StatusCode;
 use axum::response::{IntoResponse, Response};
 use axum::routing::get;
-use axum::Router;
-use study_test::{render_question, render_redirect, serve_file, QUESTIONS};
+use std::net::{Ipv4Addr, SocketAddrV4};
+use std::str::FromStr;
+use study_test::{QUESTIONS, render_question, render_redirect, serve_file};
 use tokio::net::TcpListener;
 use tower_http::trace::TraceLayer;
+use tracing::info;
 
 #[tokio::main]
 async fn main() {
@@ -25,7 +28,10 @@ async fn main() {
         .route("/", get(|| async { pre_rendered_redirect }))
         .route("/favicon.png", get(|| serve_file("favicon.png")))
         .route("/Miracode.ttf", get(|| serve_file("Miracode.ttf")))
-        .route("/PretendardVariable.woff2", get(|| serve_file("PretendardVariable.woff2")))
+        .route(
+            "/PretendardVariable.woff2",
+            get(|| serve_file("PretendardVariable.woff2")),
+        )
         .route(
             "/{question}",
             get(|path: Path<usize>| {
@@ -44,6 +50,12 @@ async fn main() {
         )
         .layer(TraceLayer::new_for_http());
 
-    let listener = TcpListener::bind("0.0.0.0:8080").await.unwrap();
+    let args: Vec<String> = std::env::args().collect();
+    let address: SocketAddrV4 = args
+        .get(1)
+        .map(|v| SocketAddrV4::from_str(v.as_str()).expect("Invalid Socket Address"))
+        .unwrap_or(SocketAddrV4::new(Ipv4Addr::UNSPECIFIED, 8080));
+    info!("Serving at {}", address);
+    let listener = TcpListener::bind(address).await.unwrap();
     axum::serve(listener, app).await.unwrap();
 }
