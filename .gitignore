@@ -2,3 +2,7 @@ target
 .direnv
 node_modules
 .env
+quiz/.idea
+quiz/target
+quiz/Cargo.lock
+quiz/question-macro/Cargo.lock
