@@ -25,6 +25,7 @@ async fn main() {
         .route("/", get(|| async { pre_rendered_redirect }))
         .route("/favicon.png", get(|| serve_file("favicon.png")))
         .route("/Miracode.ttf", get(|| serve_file("Miracode.ttf")))
+        .route("/PretendardVariable.woff2", get(|| serve_file("PretendardVariable.woff2")))
         .route(
             "/{question}",
             get(|path: Path<usize>| {

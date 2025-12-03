@@ -8,6 +8,7 @@ pub static QUESTIONS: &[Question] = include_questions!("questions");
 
 pub static ICON: &[u8] = include_bytes!("../favicon.png");
 pub static MIRACODE: &[u8] = include_bytes!("../Miracode.ttf");
+pub static PRETENDARD_VARIABLE: &[u8] = include_bytes!("../PretendardVariable.woff2");
 
 pub fn render_question(question: &Question, index: usize) -> Html<String> {
     static CHOICE_OPTION_TEMPLATE: &'static str = r#"
@@ -19,7 +20,7 @@ pub fn render_question(question: &Question, index: usize) -> Html<String> {
     static TEXT_OPTION_TEMPLATE: &'static str = r#"
 <input type="radio" id="optionCHOICE_INDEX" name="option" value="CHOICE_INDEX" style="cursor: pointer" onchange="updateAnswer()">
 <label for="optionCHOICE_INDEX" style="cursor: pointer">CHOICE_LABEL:</label>
-<input type="text" id="optionCHOICE_INDEXtext" style="font-family: 'Pretendard Light',serif; background-color: #121212; border-radius: 4px; border-color: transparent; color: white; width: 128px" onchange="updateAnswer()">
+<input type="text" id="optionCHOICE_INDEXtext" style="font-family: 'Pretendard Variable',serif; font-weight: 200; background-color: #121212; border-radius: 4px; border-color: transparent; color: white; width: 128px" onchange="updateAnswer()">
 <br/>
 "#;
 
@@ -103,7 +104,9 @@ let newSequence = Array(RANGE_SIZE).fill().map((element, index) => index)
 shuffleArray(newSequence)
 const defaultSubmitted = Array(RANGE_SIZE).fill("")
 const defaultCorrect = Array(RANGE_SIZE).fill(false)
-document.cookie = JSON.stringify({ sequence: newSequence, submitted: defaultSubmitted, correct: defaultCorrect })
+document.cookie = "testSequence=" + encodeURIComponent(JSON.stringify(newSequence))
+document.cookie = "testSubmitted=" + encodeURIComponent(JSON.stringify(defaultSubmitted))
+document.cookie = "testCorrect=" + encodeURIComponent(JSON.stringify(defaultCorrect))
 document.location.href = "/" + newSequence[0]
 </script>
 </body>
@@ -115,9 +118,11 @@ document.location.href = "/" + newSequence[0]
 }
 
 pub async fn serve_file(file_name: &str) -> Response {
+
     let (content_type, bytes) = match file_name {
         "favicon.png" => ("image/png", ICON),
         "Miracode.ttf" => ("font/ttf", MIRACODE),
+        "PretendardVariable.woff2" => ("font/woff2", PRETENDARD_VARIABLE),
         _ => {
             return Response::builder()
                 .status(StatusCode::NOT_FOUND)
