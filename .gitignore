@@ -6,3 +6,4 @@ quiz/.idea
 quiz/target
 quiz/Cargo.lock
 quiz/question-macro/Cargo.lock
+quiz/submissions
