@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="kr" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>코딩랩 Rust 스터디 중간평가</title>
+
+    <meta property="og:site_name" content="코딩랩 Rust 스터디 중간평가"/>
+    <meta property="og:title" content="코딩랩 Rust 스터디 중간평가"/>
+    <link rel="icon" href="./favicon.png"/>
+    <style>
+        @font-face {
+            font-family: Miracode;
+            src: url('/Miracode.ttf');
+        }
+
+        @font-face {
+            font-family: "Pretendard Variable";
+            src: url('/PretendardVariable.woff2');
+        }
+    </style>
+</head>
+<body style="background-color: black">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/rust.min.js"></script>
+
+<script>hljs.highlightAll();</script>
+<div style="text-align: center; margin: auto; width: 80%">
+    <p style="
+        background-image: linear-gradient(to right, #FF5C0B, #FF1D70);
+         text-align: left;
+          font-family: 'Pretendard Variable',serif;
+          font-weight: 600;
+          font-size: 48px;
+          color: transparent;
+          background-clip: text;
+          margin-bottom: 10px;
+    ">Coding Lab 2025 Rust Study Midterm</p>
+    <div style="margin-top: 0; width: 100%; height: 4px; background-image: linear-gradient(to right, #FF5C0B, #FF1D70)"></div>
+    <p style="color: white; font-family: 'Pretendard Variable',serif; font-weight: 600; font-size: 48px">LARGE_MESSAGE</p>
+    SUBMIT
+    <div id="testResult" style="display: inline-block"></div>
+    <div style="text-align: left; margin-top: 20px">
+        <button style="font-family: 'Pretendard Variable',serif; font-weight: 200; color: white; background-color: #FF5C0B; border: none; border-radius: 6px; font-size: 20px; padding: 5px 10px; margin-right: 5px; display: inline-block; float: left; cursor: pointer"
+                onclick="goPrevious()">
+            Previous
+        </button>
+        <p id=progress
+           style="font-family: 'Pretendard Variable',serif; font-weight: 100; color: dimgray; display: inline-block; width: 100%; text-align: center">
+            QUESTION_COUNT/QUESTION_COUNT</p>
+    </div>
+</div>
+<script>
+    INIT_SCRIPT
+
+    function goPrevious() {
+        const cookieObject = getCookie()
+        const lastPage = cookieObject.sequence[cookieObject.sequence.length - 1]
+
+        document.location.href = "./" + lastPage
+    }
+
+    function getCookie() {
+        let testSequenceIndex = document.cookie.indexOf("testSequence=")
+        let testSubmittedIndex = document.cookie.indexOf("testSubmitted=")
+        let testCorrectIndex = document.cookie.indexOf("testCorrect=")
+        if (testSequenceIndex === -1) {
+            return null
+        }
+        if (testSubmittedIndex === -1) {
+            return null
+        }
+        if (testCorrectIndex === -1) {
+            return null
+        }
+
+        testSequenceIndex += "testSequence=".length
+        testSubmittedIndex += "testSubmitted=".length
+        testCorrectIndex += "testCorrect=".length
+
+        const testSequenceString = decodeURIComponent(document.cookie.substring(testSequenceIndex).split(";")[0])
+        const testSubmittedString = decodeURIComponent(document.cookie.substring(testSubmittedIndex).split(";")[0])
+        const testCorrectString = decodeURIComponent(document.cookie.substring(testCorrectIndex).split(";")[0])
+
+        const testSequence = JSON.parse(testSequenceString)
+        const testSubmitted = JSON.parse(testSubmittedString)
+        const testCorrect = JSON.parse(testCorrectString)
+
+        return {
+            sequence: testSequence,
+            submitted: testSubmitted,
+            correct: testCorrect,
+        }
+    }
+</script>
+</body>
+</html>

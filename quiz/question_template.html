@@ -8,7 +8,7 @@
 
     <meta property="og:site_name" content="코딩랩 Rust 스터디 중간평가"/>
     <meta property="og:title" content="코딩랩 Rust 스터디 중간평가"/>
-    <link rel="icon" href="/favicon.png"/>
+    <link rel="icon" href="./favicon.png"/>
     <style>
         @font-face { font-family: Miracode; src: url('/Miracode.ttf'); }
         @font-face { font-family: "Pretendard Variable"; src: url('/PretendardVariable.woff2'); }
@@ -61,7 +61,7 @@
     {
         let cookieObject = getCookie()
         if (cookieObject == null) {
-            document.location.href = "/"
+            document.location.href = "./"
         } else {
             let sequence = cookieObject.sequence
             let pageNumber = parseInt(document.location.pathname.substring(1))
@@ -134,9 +134,9 @@
         const sequenceIndex = cookieObject.sequence.indexOf(pageNumber)
 
         if (sequenceIndex === cookieObject.sequence.length - 1) {
-            document.location.href = "/finish"
+            document.location.href = "./finish"
         } else {
-            document.location.href = "/" + cookieObject.sequence[sequenceIndex + 1]
+            document.location.href = "./" + cookieObject.sequence[sequenceIndex + 1]
         }
     }
 
@@ -146,7 +146,7 @@
         const sequenceIndex = cookieObject.sequence.indexOf(pageNumber)
 
         if (sequenceIndex !== 0) {
-            document.location.href = "/" + cookieObject.sequence[sequenceIndex - 1]
+            document.location.href = "./" + cookieObject.sequence[sequenceIndex - 1]
         }
     }
 
