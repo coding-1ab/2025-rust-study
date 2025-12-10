@@ -29,20 +29,20 @@ pub static MIRACODE: &[u8] = include_bytes!("../Miracode.ttf");
 pub static PRETENDARD_VARIABLE: &[u8] = include_bytes!("../PretendardVariable.woff2");
 
 pub fn render_question(question: &Question, index: usize) -> Html<String> {
-    static CHOICE_OPTION_TEMPLATE: &'static str = r#"
+    static CHOICE_OPTION_TEMPLATE: &str = r#"
 <input type="radio" id="optionCHOICE_INDEX" name="option" value="CHOICE_INDEX" style="cursor: pointer" onchange="updateAnswer()">
 <label for="optionCHOICE_INDEX" style="cursor: pointer">CHOICE_LABEL</label>
 <br/>
 "#;
 
-    static TEXT_OPTION_TEMPLATE: &'static str = r#"
+    static TEXT_OPTION_TEMPLATE: &str = r#"
 <input type="radio" id="optionCHOICE_INDEX" name="option" value="CHOICE_INDEX" style="cursor: pointer" onchange="updateAnswer()">
 <label for="optionCHOICE_INDEX" style="cursor: pointer">CHOICE_LABEL:</label>
 <input type="text" id="optionCHOICE_INDEXtext" style="font-family: 'Pretendard Variable',serif; font-weight: 200; background-color: #121212; border-radius: 4px; border-color: transparent; color: white; width: 128px" onchange="updateAnswer()">
 <br/>
 "#;
 
-    static CODE_TEMPLATE: &'static str = r#"
+    static CODE_TEMPLATE: &str = r#"
 <pre><code
     id="code"
     class="rust"
@@ -136,14 +136,14 @@ document.location.href = "./" + newSequence[0]
 }
 
 pub fn render_finish_page(oauth_provider: Option<Arc<DiscordData>>) -> Html<String> {
-    static DISCORD_UNAVAILABLE: &'static str = r#"
+    static DISCORD_UNAVAILABLE: &str = r#"
         <p id="no_discord" style="display: none">:p</p>
         <p style="color: yellow; font-family: 'Miracode',serif; font-weight: 600; font-size: 48px">☹</p>
         <p style="color: white; font-family: 'Pretendard Variable',serif; font-weight: 600; font-size: 48px">디스코드 API가 비활성화 되어 있습니다! 온라인 제출이 불가능합니다!</p>
         <p style="color: white; font-family: 'Pretendard Variable',serif; font-weight: 600; font-size: 24px">퀴즈 결과:</p>
 "#;
 
-    static OFFLINE_SCRIPT: &'static str = r#"
+    static OFFLINE_SCRIPT: &str = r#"
     {
         let cookieObject = getCookie()
         if (cookieObject == null) {
@@ -170,10 +170,10 @@ pub fn render_finish_page(oauth_provider: Option<Arc<DiscordData>>) -> Html<Stri
     }
 "#;
 
-    static DISCORD_AVAILABLE: &'static str = r#"
+    static DISCORD_AVAILABLE: &str = r#"
     <p style="color: royalblue; font-family: 'Pretendard Variable',serif; font-weight: 300; font-size: 32px; cursor: pointer", onclick="submit()">제출하기</p>
 "#;
-    static ONLINE_SCRIPT: &'static str = r#"
+    static ONLINE_SCRIPT: &str = r#"
     {
         let cookieObject = getCookie()
         if (cookieObject == null) {
@@ -347,7 +347,7 @@ pub async fn save_answer(
 }
 
 pub async fn handle_submit(discord: Arc<DiscordData>, cookie: UserCookie) -> Response {
-    let mut rng = OsRng::default();
+    let mut rng = OsRng;
     let mut salt = [0u8; 16];
     rng.try_fill_bytes(&mut salt).unwrap();
     let salt = u128::from_le_bytes(salt);
@@ -362,8 +362,10 @@ pub async fn handle_submit(discord: Arc<DiscordData>, cookie: UserCookie) -> Res
     debug_assert_eq!(cookie.correct.len(), cookie.submitted.len());
 
     let score = (cookie.correct.into_iter().filter(|v| *v).count() as f32) / cookie.submitted.len() as f32;
+    let score = score * 100.0;
     let answers: Result<Vec<_>, StatusCode> = cookie.sequence.into_iter().zip(cookie.submitted.into_iter()).map(|(sequence, entry)| {
         let Some(question) = QUESTIONS.get(sequence) else {
+            error!("Invalid Quiz Number detected!: {}", sequence);
             return Err(StatusCode::BAD_REQUEST);
         };
         let name = format!("{}.md", question.name);
@@ -374,11 +376,15 @@ pub async fn handle_submit(discord: Arc<DiscordData>, cookie: UserCookie) -> Res
             None => {
                 let index: usize = entry.parse().unwrap();
                 let Some(choice) = question.choices.get(index) else {
+                    error!("Invalid Answer Number {} detected for question {}", index, question.name);
                     return Err(StatusCode::BAD_REQUEST);
                 };
                 match choice {
                     Answer::Choice { label } => label.to_string(),
-                    Answer::Subjective { .. } => return Err(StatusCode::BAD_REQUEST),
+                    Answer::Subjective { .. } => {
+                        error!("Invalid Answer Number {} detected for question {}", index, question.name);
+                        return Err(StatusCode::BAD_REQUEST)
+                    },
                 }
             }
         };
@@ -401,6 +407,7 @@ pub async fn handle_submit(discord: Arc<DiscordData>, cookie: UserCookie) -> Res
 
 pub async fn oauth_redirect(param: OauthRedirectUrlParams, discord: Arc<DiscordData>) -> Response {
     let Ok(salt) = u128::from_str_radix(param.state.as_str(), 16) else {
+        error!("State is not u128!: {}", param.state.as_str());
         return StatusCode::BAD_REQUEST.into_response();
     };
     let mut attempts_writer = discord.oauth_attempts.write().await;
@@ -456,6 +463,10 @@ pub async fn oauth_redirect(param: OauthRedirectUrlParams, discord: Arc<DiscordD
     debug_assert_eq!(response.token_type, "Bearer");
 
     let guild_member = get_current_user_guild_profile(response.access_token.as_str(), discord.guild_id.as_str(), &client).await;
+    let guild_member = match guild_member {
+        Ok(v) => v,
+        Err(code) => return code.into_response()
+    };
     let name = guild_member.nick.or(guild_member.user.global_name).unwrap_or(guild_member.user.username);
 
     let save_result = save_answer(discord, guild_member.user.id, quiz_result).await;
@@ -474,9 +485,15 @@ pub async fn get_current_user_guild_profile(
     access_token: &str,
     guild_id: &str,
     client: &reqwest::Client
-) -> DiscordGuildMember {
+) -> Result<DiscordGuildMember, StatusCode> {
     let url = format!("https://discord.com/api/users/@me/guilds/{}/member", guild_id);
-    client.get(&url).bearer_auth(access_token).send().await.unwrap().json::<DiscordGuildMember>().await.unwrap()
+    let response = client.get(&url).bearer_auth(access_token).send().await.unwrap();
+    if !response.status().is_success() {
+        error!("Discord returned error code {:?}. Response Body: {}", response.status(), response.text().await.unwrap());
+        return Err(StatusCode::INTERNAL_SERVER_ERROR);
+    }
+
+    Ok(response.json::<DiscordGuildMember>().await.unwrap())
 }
 
 pub struct Question {

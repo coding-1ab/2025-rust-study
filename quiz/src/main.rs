@@ -33,7 +33,7 @@ async fn main() {
     let pre_rendered_redirect = render_redirect();
 
     let discord_data = try_init_discord().await;
-    if let None = discord_data {
+    if discord_data.is_none() {
         warn!("Discord support disabled!");
     }
     let pre_rendered_finish_page = render_finish_page(discord_data.clone());
@@ -45,16 +45,15 @@ async fn main() {
     };
     let state = Arc::new(state);
 
-    if state.discord_data.is_some() {
-        let state_clone = state.clone();
+    if let Some(discord_data) = state.discord_data.as_ref() {
+        let discord_data = discord_data.clone();
 
         let oauth_state_cleaner = async move || {
-            let state = state_clone;
-            let leaderboard = state.discord_data.as_ref().unwrap();
+            let discord_data = discord_data;
             loop {
                 let cutoff = Instant::now() - FIVE_MINUTES;
                 {
-                    let mut writer = leaderboard.oauth_attempts.write().await;
+                    let mut writer = discord_data.oauth_attempts.write().await;
                     writer.retain(|_, &mut (requested_time, _)| requested_time >= cutoff);
                 }
                 sleep(Duration::from_mins(1)).await;
