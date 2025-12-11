@@ -149,24 +149,25 @@ pub fn render_finish_page(oauth_provider: Option<Arc<DiscordData>>) -> Html<Stri
         if (cookieObject == null) {
             document.location.href = "./"
         }
-    }
-    const resultList = document.getElementById("testResult")
-    for (let i = 0; i < QUESTION_COUNT; i++) {
-        const number = cookieObject.sequence[i]
-        const result = cookieObject.correct[i]
 
-        const text = document.createElement("a")
-        text.textContent = number
-        text.style.fontFamily = "Miracode"
-        text.style.display = "inline-block"
-        text.style.padding = "10px"
-        text.href = "./" + number
-        if (result) {
-            text.style.color = "green"
-        } else {
-            text.style.color = "red"
+        const resultList = document.getElementById("testResult")
+        for (let i = 0; i < QUESTION_COUNT; i++) {
+            const number = cookieObject.sequence[i]
+            const result = cookieObject.correct[i]
+
+            const text = document.createElement("a")
+            text.textContent = number
+            text.style.fontFamily = "Miracode"
+            text.style.display = "inline-block"
+            text.style.padding = "10px"
+            text.href = "./" + number
+            if (result) {
+                text.style.color = "green"
+            } else {
+                text.style.color = "red"
+            }
+            resultList.appendChild(text)
         }
-        resultList.appendChild(text)
     }
 "#;
 
@@ -245,7 +246,7 @@ pub async fn try_init_discord() -> Option<Arc<DiscordData>> {
     let discord_redirect = std::env::var("DISCORD_REDIRECT")
         .map_err(|e| {
             error!(
-                "Unable to fetch environment variable DISCORD_SECRET: {:?}",
+                "Unable to fetch environment variable DISCORD_REDIRECT: {:?}",
                 e
             );
         })
