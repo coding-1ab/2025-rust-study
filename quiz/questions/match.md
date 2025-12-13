@@ -9,9 +9,9 @@ fn main() {
     
     match a.cmp(&b) {
         Ordering::Less => {
-            println!("Less"),
+            println!("Less");
         }
-        Ordering::Greater => println!("Greater")
+        Ordering::Greater => println!("Greater"),
     }
 }
 ```
