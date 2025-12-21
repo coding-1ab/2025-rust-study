@@ -29,12 +29,21 @@ importers:
 
   scripts/attendance-bot:
     dependencies:
+      '@date-fns/tz':
+        specifier: github:date-fns/tz
+        version: https://codeload.github.com/date-fns/tz/tar.gz/d8b63dd17b27ef8f919ae7ca4c13e8ba30ccffbf
+      date-fns:
+        specifier: ^4.1.0
+        version: 4.1.0
       discord.js:
         specifier: ^14.24.2
         version: 14.24.2
       es-toolkit:
         specifier: ^1.41.0
         version: 1.41.0
+      node-cron:
+        specifier: ^4.2.1
+        version: 4.2.1
       smol-toml:
         specifier: ^1.5.2
         version: 1.5.2
@@ -72,6 +81,10 @@ importers:
         version: 5.9.3
 
 packages:
+
+  '@date-fns/tz@https://codeload.github.com/date-fns/tz/tar.gz/d8b63dd17b27ef8f919ae7ca4c13e8ba30ccffbf':
+    resolution: {tarball: https://codeload.github.com/date-fns/tz/tar.gz/d8b63dd17b27ef8f919ae7ca4c13e8ba30ccffbf}
+    version: 1.4.1
 
   '@discordjs/builders@1.13.0':
     resolution: {integrity: sha512-COK0uU6ZaJI+LA67H/rp8IbEkYwlZf3mAoBI5wtPh5G5cbEQGNhVpzINg2f/6+q/YipnNIKy6fJDg6kMUKUw4Q==}
@@ -279,6 +292,9 @@ packages:
     resolution: {integrity: sha512-Xfe6rpCTxSxfbswi/W/Pz7zp1WWSNn4A0eW4mLkQUewCrXXtMj31lCg+iQyTkh/CkusZSq9eDflu7tjEDXUY6g==}
     engines: {node: '>=v14.0.0', npm: '>=7.0.0'}
 
+  date-fns@4.1.0:
+    resolution: {integrity: sha512-Ukq0owbQXxa/U3EGtsdVBkR1w7KOQ5gIBqdH2hkvknzZPYvBxb/aa6E8L7tmjFtkwZBu3UXBbjIgPo/Ez4xaNg==}
+
   discord-api-types@0.38.33:
     resolution: {integrity: sha512-oau1V7OzrNX8yNi+DfQpoLZCNCv7cTFmvPKwHfMrA/tewsO6iQKrMTzA7pa3iBSj0fED6NlklJ/1B/cC1kI08Q==}
 
@@ -313,6 +329,10 @@ packages:
 
   magic-bytes.js@1.12.1:
     resolution: {integrity: sha512-ThQLOhN86ZkJ7qemtVRGYM+gRgR8GEXNli9H/PMvpnZsE44Xfh3wx9kGJaldg314v85m+bFW6WBMaVHJc/c3zA==}
+
+  node-cron@4.2.1:
+    resolution: {integrity: sha512-lgimEHPE/QDgFlywTd8yTR61ptugX3Qer29efeyWw2rv259HtGBNn1vZVmp8lB9uo9wC0t/AT4iGqXxia+CJFg==}
+    engines: {node: '>=6.0.0'}
 
   resolve-pkg-maps@1.0.0:
     resolution: {integrity: sha512-seS2Tj26TBVOC2NIc2rOe2y2ZO7efxITtLZcGSOnHHNOQ7CkiUBfw0Iw2ck6xkIhPwLhKNLS8BO+hEpngQlqzw==}
@@ -360,6 +380,8 @@ packages:
     resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
 
 snapshots:
+
+  '@date-fns/tz@https://codeload.github.com/date-fns/tz/tar.gz/d8b63dd17b27ef8f919ae7ca4c13e8ba30ccffbf': {}
 
   '@discordjs/builders@1.13.0':
     dependencies:
@@ -505,6 +527,8 @@ snapshots:
 
   '@vladfrangu/async_event_emitter@2.4.7': {}
 
+  date-fns@4.1.0: {}
+
   discord-api-types@0.38.33: {}
 
   discord.js@14.24.2:
@@ -571,6 +595,8 @@ snapshots:
   lodash@4.17.21: {}
 
   magic-bytes.js@1.12.1: {}
+
+  node-cron@4.2.1: {}
 
   resolve-pkg-maps@1.0.0: {}
 
