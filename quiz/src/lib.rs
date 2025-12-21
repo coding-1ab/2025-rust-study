@@ -275,6 +275,7 @@ pub async fn try_init_discord() -> Option<Arc<DiscordData>> {
 
 pub async fn save_answer(
     discord: Arc<DiscordData>,
+    username: String,
     sender_id: String,
     quiz_result: QuizResult,
 ) -> Result<(), StatusCode> {
@@ -291,10 +292,11 @@ pub async fn save_answer(
     let file_writer = async move || {
         let sender_id = sender_id_clone;
         let now = Local::now();
-        let filename = now.format("%Y-%m-%dT%H-%M-%S.json").to_string();
+        let submission_name = now.format("%Y-%m-%dT%H-%M-%S.json").to_string();
 
         let dir_path = format!("submissions/{}", sender_id);
-        let file_path = format!("submissions/{}/{}", sender_id, filename);
+        let username_path = format!("submissions/{}/{}", sender_id, username);
+        let submission_path = format!("submissions/{}/{}", sender_id, submission_name);
         if let Err(e) = create_dir_all(dir_path.as_str()).await {
             error!(
                 "Unable to create submission directory at {}!\n{:?}\nData is not saved: {}",
@@ -302,13 +304,19 @@ pub async fn save_answer(
             );
             return Err(StatusCode::INTERNAL_SERVER_ERROR);
         };
+        if let Err(e) = File::create(username_path.as_str()).await {
+            error!(
+                "Unable to create username file at {}!\n{:?}\nMarker for \"{}\" is not created!",
+                username_path, e, username
+            );
+        }
 
-        let mut file = match File::create(file_path.as_str()).await {
+        let mut file = match File::create(submission_path.as_str()).await {
             Ok(f) => f,
             Err(e) => {
                 error!(
                     "Unable to create submission file at {}!\n{:?}\nData is not saved: {}",
-                    file_path, e, json_string
+                    submission_path, e, json_string
                 );
                 return Err(StatusCode::INTERNAL_SERVER_ERROR);
             }
@@ -317,7 +325,7 @@ pub async fn save_answer(
         if let Err(e) = file.write_all(json_string.as_bytes()).await {
             error!(
                 "Unable to write submission entry at {}!\n{:?}\nData is not saved: {}",
-                file_path, e, json_string
+                submission_path, e, json_string
             );
             return Err(StatusCode::INTERNAL_SERVER_ERROR);
         }
@@ -325,7 +333,7 @@ pub async fn save_answer(
         if let Err(e) = file.flush().await {
             error!(
                 "Unable to save submission entry at {}!\n{:?}\nData is not saved: {}",
-                file_path, e, json_string
+                submission_path, e, json_string
             );
             return Err(StatusCode::INTERNAL_SERVER_ERROR);
         };
@@ -470,7 +478,7 @@ pub async fn oauth_redirect(param: OauthRedirectUrlParams, discord: Arc<DiscordD
     };
     let name = guild_member.nick.or(guild_member.user.global_name).unwrap_or(guild_member.user.username);
 
-    let save_result = save_answer(discord, guild_member.user.id, quiz_result).await;
+    let save_result = save_answer(discord, name.clone(), guild_member.user.id, quiz_result).await;
     match save_result {
         Ok(_) => {
             Response::builder()
