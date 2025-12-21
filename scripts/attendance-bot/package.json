@@ -1,0 +1,27 @@
+{
+	"name": "@coding-1ab/rust-study-bot",
+	"version": "0.0.0",
+	"type": "module",
+	"main": "src/index.ts",
+	"scripts": {
+		"start": "tsx --env-file .env ./src/index.ts"
+	},
+	"author": "Abiria <oro3673@gmail.com>",
+	"license": "MIT",
+	"private": true,
+	"packageManager": "pnpm@10.20.0",
+	"dependencies": {
+		"@date-fns/tz": "github:date-fns/tz",
+		"date-fns": "^4.1.0",
+		"discord.js": "^14.24.2",
+		"es-toolkit": "^1.41.0",
+		"node-cron": "^4.2.1",
+		"smol-toml": "^1.5.2",
+		"zod": "^3.23.0"
+	},
+	"devDependencies": {
+		"@types/node": "^20.11.30",
+		"tsx": "^4.20.6",
+		"typescript": "^5.9.3"
+	}
+}
