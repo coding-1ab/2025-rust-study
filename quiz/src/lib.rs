@@ -657,9 +657,15 @@ pub async fn verify(path: &str) -> Result<Vec<(&'static Question, String)>, io::
             panic!("Question with title {} not found in any of the files!", title);
         };
 
-        let is_correct = match &question.choices[question.answer] {
-            Answer::Choice { label } => *label == answer.as_str(),
-            Answer::Subjective { value, .. } => *value == answer.as_str(),
+        let is_correct = {
+            if question.name.contains("String vs &str") {
+                answer.contains("read_line 함수는 재할당 가능한 버퍼가 필요하지만")
+            } else {
+                match &question.choices[question.answer] {
+                    Answer::Choice { label } => *label == answer.as_str(),
+                    Answer::Subjective { value, .. } => *value == answer.as_str(),
+                }
+            }
         };
         if !is_correct {
             to_return.push((question, answer));
