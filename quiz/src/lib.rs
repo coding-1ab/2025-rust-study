@@ -12,7 +12,8 @@ use std::collections::HashMap;
 use std::sync::Arc;
 use std::time::{Duration, Instant};
 use tokio::fs::{File, create_dir_all};
-use tokio::io::AsyncWriteExt;
+use tokio::io;
+use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tokio::sync::RwLock;
 use tokio::task::JoinSet;
 use tracing::error;
@@ -506,11 +507,11 @@ pub async fn get_current_user_guild_profile(
 }
 
 pub struct Question {
-    name: &'static str,
-    description: &'static str,
-    code: &'static str,
-    choices: &'static [Answer],
-    answer: usize,
+    pub name: &'static str,
+    pub description: &'static str,
+    pub code: &'static str,
+    pub choices: &'static [Answer],
+    pub answer: usize,
 }
 
 pub enum Answer {
@@ -523,6 +524,8 @@ pub enum Answer {
         value: &'static str,
     },
 }
+
+
 
 #[derive(Debug, Serialize, Deserialize)]
 pub enum SubmittedAnswer {
@@ -627,4 +630,41 @@ impl PartialEq<SubmittedAnswer> for Answer {
             }
         }
     }
+}
+
+pub async fn verify(path: &str) -> Result<Vec<(&'static Question, String)>, io::Error> {
+    let quiz_result: QuizResult = {
+        let mut file = File::open(path).await?;
+        let mut buffer = String::new();
+        file.read_to_string(&mut buffer).await?;
+        match serde_json::from_str(&buffer) {
+            Ok(v) => v,
+            Err(e) => {
+                eprintln!("Buffer contents: {}", buffer);
+                panic!("{:?}", e);
+            }
+        }
+    };
+    let mut to_return = Vec::new();
+
+    for (title, answer) in quiz_result.answers {
+        let title = {
+            let length = title.len();
+            &title[..length - 3]
+        };
+
+        let Some(question) = QUESTIONS.iter().find(|v| v.name == title) else {
+            panic!("Question with title {} not found in any of the files!", title);
+        };
+
+        let is_correct = match &question.choices[question.answer] {
+            Answer::Choice { label } => *label == answer.as_str(),
+            Answer::Subjective { value, .. } => *value == answer.as_str(),
+        };
+        if !is_correct {
+            to_return.push((question, answer));
+        }
+    }
+
+    Ok(to_return)
 }

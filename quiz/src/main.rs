@@ -9,7 +9,7 @@ use std::net::{Ipv4Addr, SocketAddrV4};
 use std::str::FromStr;
 use std::sync::Arc;
 use std::time::{Duration, Instant};
-use study_test::{handle_submit, oauth_redirect, render_finish_page, render_question, render_redirect, serve_file, try_init_discord, OauthRedirectUrlParams, ServiceState, UserCookie, FIVE_MINUTES, QUESTIONS};
+use study_test::{handle_submit, oauth_redirect, render_finish_page, render_question, render_redirect, serve_file, try_init_discord, verify, Answer, OauthRedirectUrlParams, ServiceState, UserCookie, FIVE_MINUTES, QUESTIONS};
 use tokio::net::TcpListener;
 use tokio::time::sleep;
 use tower_http::trace::TraceLayer;
@@ -123,11 +123,30 @@ async fn main() {
         .layer(TraceLayer::new_for_http());
 
     let args: Vec<String> = std::env::args().collect();
-    let address: SocketAddrV4 = args
-        .get(1)
-        .map(|v| SocketAddrV4::from_str(v.as_str()).expect("Invalid Socket Address"))
-        .unwrap_or(SocketAddrV4::new(Ipv4Addr::UNSPECIFIED, 8080));
-    info!("Serving at {}", address);
-    let listener = TcpListener::bind(address).await.unwrap();
-    axum::serve(listener, app.with_state(state)).await.unwrap();
+
+    if args.get(1).map(|v| v == "--verify").unwrap_or(false) {
+        let path = args.get(2).unwrap();
+        let result = verify(path).await.unwrap();
+        for (question, wrong_answer) in result {
+            println!("-----------------");
+            println!("# {}", question.name);
+            println!();
+            println!("{}", question.description);
+            println!("{}", question.code);
+            let answer_string = match &question.choices[question.answer] {
+                Answer::Choice { label } => label.to_string(),
+                Answer::Subjective { label, value } => format!("{}[{}]", label, value),
+            };
+            println!("Answer: {}", answer_string);
+            println!("Submission: {}", wrong_answer);
+        }
+    } else {
+        let address: SocketAddrV4 = args
+            .get(1)
+            .map(|v| SocketAddrV4::from_str(v.as_str()).expect("Invalid Socket Address"))
+            .unwrap_or(SocketAddrV4::new(Ipv4Addr::UNSPECIFIED, 8080));
+        info!("Serving at {}", address);
+        let listener = TcpListener::bind(address).await.unwrap();
+        axum::serve(listener, app.with_state(state)).await.unwrap();
+    }
 }
