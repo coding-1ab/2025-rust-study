@@ -8,25 +8,6 @@ importers:
 
   .: {}
 
-  scripts/a:
-    dependencies:
-      discord.js:
-        specifier: ^14.24.2
-        version: 14.24.2
-      es-toolkit:
-        specifier: ^1.41.0
-        version: 1.41.0
-      smol-toml:
-        specifier: ^1.4.2
-        version: 1.5.2
-    devDependencies:
-      tsx:
-        specifier: ^4.20.6
-        version: 4.20.6
-      typescript:
-        specifier: ^5.9.3
-        version: 5.9.3
-
   scripts/attendance-bot:
     dependencies:
       '@date-fns/tz':
@@ -45,8 +26,8 @@ importers:
         specifier: ^4.2.1
         version: 4.2.1
       smol-toml:
-        specifier: ^1.5.2
-        version: 1.5.2
+        specifier: ^1.6.1
+        version: 1.6.1
       zod:
         specifier: ^3.23.0
         version: 3.25.76
@@ -70,8 +51,8 @@ importers:
         specifier: ^1.41.0
         version: 1.41.0
       smol-toml:
-        specifier: ^1.4.2
-        version: 1.5.2
+        specifier: ^1.6.1
+        version: 1.6.1
     devDependencies:
       tsx:
         specifier: ^4.20.6
@@ -337,8 +318,8 @@ packages:
   resolve-pkg-maps@1.0.0:
     resolution: {integrity: sha512-seS2Tj26TBVOC2NIc2rOe2y2ZO7efxITtLZcGSOnHHNOQ7CkiUBfw0Iw2ck6xkIhPwLhKNLS8BO+hEpngQlqzw==}
 
-  smol-toml@1.5.2:
-    resolution: {integrity: sha512-QlaZEqcAH3/RtNyet1IPIYPsEWAaYyXXv1Krsi+1L/QHppjX4Ifm8MQsBISz9vE8cHicIq3clogsheili5vhaQ==}
+  smol-toml@1.6.1:
+    resolution: {integrity: sha512-dWUG8F5sIIARXih1DTaQAX4SsiTXhInKf1buxdY9DIg4ZYPZK5nGM1VRIYmEbDbsHt7USo99xSLFu5Q1IqTmsg==}
     engines: {node: '>= 18'}
 
   ts-mixer@6.0.4:
@@ -600,7 +581,7 @@ snapshots:
 
   resolve-pkg-maps@1.0.0: {}
 
-  smol-toml@1.5.2: {}
+  smol-toml@1.6.1: {}
 
   ts-mixer@6.0.4: {}
 
